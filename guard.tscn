@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3d4v8wm2nkrq"]
+
+[ext_resource type="Script" path="res://guard.gd" id="1_guard"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_guard"]
+size = Vector2(20, 40)
+
+[node name="Guard" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_guard")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+texture = PlaceholderTexture2D.new()
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_guard")
+
+[node name="VisionRayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(120, 0)
+collision_mask = 1
+hit_from_inside = true
+
+[node name="EdgeRayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(10, 20)
+collision_mask = 2
