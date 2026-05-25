@@ -1,50 +1,183 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2h5k9p3lmxyz"]
+[gd_scene load_steps=6 format=3 uid="uid://d2h5k9p3lmxyz"]
 
 [ext_resource type="Script" path="res://main_level.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://bxqwc8yv1rkfp" path="res://player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://c3d4v8wm2nkrq" path="res://guard.tscn" id="3_guard"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
-size = Vector2(1280, 40)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_terminal"]
+size = Vector2(32, 48)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
-size = Vector2(200, 20)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit_area"]
+size = Vector2(40, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit_barrier"]
+size = Vector2(20, 56)
 
 [node name="MainLevel" type="Node2D"]
 script = ExtResource("1_main")
 
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(640, 340)
-collision_layer = 2
-collision_mask = 0
+[node name="LevelRoot" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
-shape = SubResource("RectangleShape2D_floor")
+[node name="Terminal" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
 
-[node name="ColorRect" type="ColorRect" parent="Ground"]
-offset_left = -640.0
-offset_top = -20.0
-offset_right = 640.0
-offset_bottom = 20.0
-color = Color(0.4, 0.3, 0.2, 1)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terminal"]
+shape = SubResource("RectangleShape2D_terminal")
 
-[node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(900, 220)
-collision_layer = 2
-collision_mask = 0
+[node name="ColorRect" type="ColorRect" parent="Terminal"]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = 24.0
+color = Color(0.2, 0.8, 0.9, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
-shape = SubResource("RectangleShape2D_platform")
-
-[node name="ColorRect" type="ColorRect" parent="Platform"]
-offset_left = -100.0
-offset_top = -10.0
-offset_right = 100.0
-offset_bottom = 10.0
-color = Color(0.5, 0.4, 0.3, 1)
+[node name="Prompt" type="Label" parent="Terminal"]
+visible = false
+offset_left = -80.0
+offset_top = -48.0
+offset_right = 80.0
+offset_bottom = -24.0
+horizontal_alignment = 1
+text = "Press E to hack"
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
-position = Vector2(100, 280)
 
 [node name="Guard" parent="." instance=ExtResource("3_guard")]
-position = Vector2(900, 180)
+
+[node name="ExitDoor" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_exit_area")
+
+[node name="Frame" type="ColorRect" parent="ExitDoor"]
+offset_left = -20.0
+offset_top = -28.0
+offset_right = 20.0
+offset_bottom = 28.0
+color = Color(0.7, 0.5, 0.2, 1)
+
+[node name="Barrier" type="StaticBody2D" parent="ExitDoor"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor/Barrier"]
+shape = SubResource("RectangleShape2D_exit_barrier")
+
+[node name="ColorRect" type="ColorRect" parent="ExitDoor/Barrier"]
+offset_left = -10.0
+offset_top = -28.0
+offset_right = 10.0
+offset_bottom = 28.0
+color = Color(0.25, 0.25, 0.25, 1)
+
+[node name="Prompt" type="Label" parent="ExitDoor"]
+visible = false
+offset_left = -90.0
+offset_top = -52.0
+offset_right = 90.0
+offset_bottom = -28.0
+horizontal_alignment = 1
+text = "Exit locked"
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="ColorRect" parent="HUD"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 630.0
+offset_bottom = 126.0
+color = Color(0.03, 0.06, 0.11, 0.72)
+
+[node name="StatusLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 310.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 16
+text = "Status: playing"
+
+[node name="AlertLabel" type="Label" parent="HUD"]
+offset_left = 430.0
+offset_top = 18.0
+offset_right = 612.0
+offset_bottom = 42.0
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+text = "ALERT: Clear"
+modulate = Color(0.45, 1, 0.55, 1)
+
+[node name="MessageLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 44.0
+offset_right = 612.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 22
+text = "Objective: hack the terminal"
+
+[node name="HintLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 96.0
+offset_right = 612.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 14
+text = "Move with arrows | Space jump | E interact | Esc pause"
+
+[node name="ContextLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 612.0
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+text = "Find the cyan terminal, stand close, and press E."
+
+[node name="OverlayShade" type="ColorRect" parent="HUD"]
+visible = false
+offset_right = 640.0
+offset_bottom = 360.0
+color = Color(0.01, 0.02, 0.04, 0.78)
+
+[node name="OverlayPanel" type="ColorRect" parent="HUD/OverlayShade"]
+offset_left = 96.0
+offset_top = 80.0
+offset_right = 544.0
+offset_bottom = 280.0
+color = Color(0.09, 0.13, 0.18, 0.96)
+
+[node name="OverlayTitle" type="Label" parent="HUD/OverlayShade/OverlayPanel"]
+offset_left = 32.0
+offset_top = 28.0
+offset_right = 416.0
+offset_bottom = 64.0
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+text = "Paused"
+
+[node name="OverlayBody" type="Label" parent="HUD/OverlayShade/OverlayPanel"]
+offset_left = 32.0
+offset_top = 82.0
+offset_right = 416.0
+offset_bottom = 134.0
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+text = "Review the objective and resume when ready."
+
+[node name="OverlayHint" type="Label" parent="HUD/OverlayShade/OverlayPanel"]
+offset_left = 32.0
+offset_top = 154.0
+offset_right = 416.0
+offset_bottom = 180.0
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+text = "Press Esc to resume | R to restart"
+
+[node name="FlashRect" type="ColorRect" parent="HUD"]
+visible = false
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)

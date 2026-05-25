@@ -1,0 +1,223 @@
+{
+  "id": "facility_branching",
+  "screen_width": 640,
+  "screen_height": 360,
+  "floor_height": 40,
+  "templates": {
+    "start_corridor": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [250, 245],
+          "size": [150, 20],
+          "color": [0.47, 0.37, 0.28, 1.0]
+        }
+      ]
+    },
+    "switch_room": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [160, 220],
+          "size": [140, 20],
+          "color": [0.43, 0.35, 0.27, 1.0]
+        },
+        {
+          "position": [470, 180],
+          "size": [120, 20],
+          "color": [0.45, 0.36, 0.27, 1.0]
+        }
+      ]
+    },
+    "guard_hall": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [240, 240],
+          "size": [150, 20],
+          "color": [0.43, 0.34, 0.26, 1.0]
+        }
+      ]
+    },
+    "exit_branch": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [320, 220],
+          "size": [180, 20],
+          "color": [0.42, 0.34, 0.26, 1.0]
+        }
+      ]
+    },
+    "terminal_mezzanine": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [130, 210],
+          "size": [140, 20],
+          "color": [0.45, 0.37, 0.28, 1.0]
+        },
+        {
+          "position": [480, 170],
+          "size": [120, 20],
+          "color": [0.44, 0.36, 0.27, 1.0]
+        }
+      ]
+    },
+    "security_bridge": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [180, 250],
+          "size": [150, 20],
+          "color": [0.42, 0.34, 0.25, 1.0]
+        },
+        {
+          "position": [470, 200],
+          "size": [110, 20],
+          "color": [0.44, 0.36, 0.27, 1.0]
+        }
+      ]
+    },
+    "service_shaft": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [480, 240],
+          "size": [170, 20],
+          "color": [0.43, 0.35, 0.27, 1.0]
+        }
+      ]
+    },
+    "maintenance_branch": {
+      "floor": true,
+      "platforms": [
+        {
+          "position": [160, 210],
+          "size": [120, 20],
+          "color": [0.42, 0.34, 0.26, 1.0]
+        }
+      ]
+    }
+  },
+  "matrix": [
+    [
+      null,
+      {
+        "id": "upper_terminal",
+        "template": "terminal_mezzanine",
+        "terminal_spawn": [520, 300],
+        "elevators": [
+          {
+            "id": "lift_a_top",
+            "position": [110, 292],
+            "size": [72, 84],
+            "target_cell": [1, 1],
+            "target_position": [110, 292],
+            "prompt": "Press E to ride down"
+          }
+        ]
+      },
+      {
+        "id": "upper_bridge",
+        "template": "security_bridge",
+        "cameras": [
+          {
+            "id": "cam_upper_bridge",
+            "position": [320, 130],
+            "size": [300, 150],
+            "color": [0.25, 0.85, 1.0, 0.12]
+          }
+        ]
+      },
+      null
+    ],
+    [
+      {
+        "id": "dock_start",
+        "template": "start_corridor",
+        "player_spawn": [110, 280]
+      },
+      {
+        "id": "power_room",
+        "template": "switch_room",
+        "switches": [
+          {
+            "id": "security_switch",
+            "position": [520, 280],
+            "size": [40, 48],
+            "prompt": "Press E to reroute power",
+            "unlock_doors": ["exit_gate"],
+            "disable_cameras": ["cam_upper_bridge", "cam_exit_branch"]
+          }
+        ],
+        "elevators": [
+          {
+            "id": "lift_a_mid",
+            "position": [110, 292],
+            "size": [72, 84],
+            "target_cell": [1, 0],
+            "target_position": [110, 292],
+            "prompt": "Press E to ride up"
+          },
+          {
+            "id": "lift_b_mid",
+            "position": [320, 292],
+            "size": [72, 84],
+            "target_cell": [1, 2],
+            "target_position": [320, 292],
+            "prompt": "Press E to ride down"
+          }
+        ]
+      },
+      {
+        "id": "guard_post",
+        "template": "guard_hall",
+        "guard_spawn": [220, 280],
+        "doors": [
+          {
+            "id": "exit_gate",
+            "position": [560, 272],
+            "size": [28, 112],
+            "open": false
+          }
+        ]
+      },
+      {
+        "id": "exit_room",
+        "template": "exit_branch",
+        "exit_spawn": [540, 292],
+        "cameras": [
+          {
+            "id": "cam_exit_branch",
+            "position": [250, 150],
+            "size": [260, 150],
+            "color": [0.25, 0.85, 1.0, 0.12]
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      {
+        "id": "lower_service",
+        "template": "service_shaft",
+        "elevators": [
+          {
+            "id": "lift_b_lower",
+            "position": [320, 292],
+            "size": [72, 84],
+            "target_cell": [1, 1],
+            "target_position": [320, 292],
+            "prompt": "Press E to ride up"
+          }
+        ]
+      },
+      {
+        "id": "maintenance",
+        "template": "maintenance_branch"
+      },
+      null
+    ]
+  ]
+}
