@@ -12,7 +12,6 @@ script = ExtResource("1_guard")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0, 0, 1)
-texture = PlaceholderTexture2D.new()
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_guard")
